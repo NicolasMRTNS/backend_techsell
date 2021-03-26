@@ -10,5 +10,9 @@
     "backend"
   ],
   "author": "NicolasMRTNS",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1"
+  }
 }
