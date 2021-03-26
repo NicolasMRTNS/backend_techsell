@@ -1,8 +1,9 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 
 const app = express()
 
-//Handle CORS
+//Headers to handle CORS
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader(
@@ -16,6 +17,19 @@ app.use((req, res, next) => {
   next()
 })
 
+//Body parser
+app.use(express.json())
+
+//Post route
+app.post('/api/products', (req, res, next) => {
+  console.log(req.body)
+  res.status(201).json({
+    message: 'Objet créé !',
+  })
+  next()
+})
+
+//Get route
 app.use('/api/products', (req, res, next) => {
   const productData = [
     {
@@ -52,6 +66,7 @@ app.use('/api/products', (req, res, next) => {
     },
   ]
   res.status(200).json(productData)
+  next()
 })
 
 module.exports = app
