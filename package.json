@@ -1,0 +1,14 @@
+{
+  "name": "backend_techsell",
+  "version": "1.0.0",
+  "description": "Backend for Tech Sell app. Using Mongo, Express and Node. Frontend is using Vue.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "backend"
+  ],
+  "author": "NicolasMRTNS",
+  "license": "ISC"
+}
