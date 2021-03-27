@@ -2,10 +2,11 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 require('dotenv').config()
+const Product = require('./models/Product')
 
 const app = express()
 
-//Connexion to MongoDB Atlas
+//Connection to MongoDB Atlas
 mongoose
   .connect(process.env.MONGO_ATLAS_URL, {
     useNewUrlParser: true,
@@ -33,10 +34,15 @@ app.use(bodyParser.json())
 
 //Post route
 app.post('/api/products', (req, res, next) => {
-  console.log(req.body)
-  res.status(201).json({
-    message: 'Objet créé !',
-  })
+  const product = new Product({ ...req.body })
+  product
+    .save()
+    .then(() =>
+      res.status(201).json({
+        message: 'Objet créé !',
+      })
+    )
+    .catch((error) => res.status(400).json({ error }))
   next()
 })
 
