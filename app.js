@@ -1,7 +1,18 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+require('dotenv').config()
 
 const app = express()
+
+//Connexion to MongoDB Atlas
+mongoose
+  .connect(process.env.MONGO_ATLAS_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !'))
 
 //Headers to handle CORS
 app.use((req, res, next) => {
@@ -18,7 +29,7 @@ app.use((req, res, next) => {
 })
 
 //Body parser
-app.use(express.json())
+app.use(bodyParser.json())
 
 //Post route
 app.post('/api/products', (req, res, next) => {
