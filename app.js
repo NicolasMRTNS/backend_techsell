@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const { v4: uuidv4 } = require('uuid')
 require('dotenv').config()
 const Product = require('./models/Product')
 
@@ -34,7 +35,7 @@ app.use(bodyParser.json())
 
 //Post route
 app.post('/api/products', (req, res, next) => {
-  const product = new Product({ ...req.body })
+  const product = new Product({ ...req.body, id: uuidv4() })
   product
     .save()
     .then(() =>
@@ -43,7 +44,6 @@ app.post('/api/products', (req, res, next) => {
       })
     )
     .catch((error) => res.status(400).json({ error }))
-  next()
 })
 
 //Get route
