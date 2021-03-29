@@ -1,9 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-const { v4: uuidv4 } = require('uuid')
 require('dotenv').config()
-const Product = require('./models/Product')
+const productRoutes = require('./routes/products')
 
 const app = express()
 
@@ -33,57 +32,6 @@ app.use((req, res, next) => {
 //Body parser
 app.use(bodyParser.json())
 
-//Post route
-app.post('/api/products', (req, res) => {
-  const product = new Product({ ...req.body[0] })
-  console.log(product)
-  return product
-    .save()
-    .then(() =>
-      res.status(201).json({
-        message: 'Objet créé !',
-      })
-    )
-    .catch((error) => res.status(400).json({ error }))
-})
-
-//Get route
-app.use('/api/products', (req, res) => {
-  const productData = [
-    {
-      id: '2153248944598',
-      name: 'Xiaomi Redmi Note 8T',
-      price: 500,
-      category: 'Portable Android',
-      description: "Un PC vendu comme neuf, n'a quasiment jamais été utilisé.",
-      image: 'https://picsum.photos/250/200',
-    },
-    {
-      id: '54542318415',
-      name: 'Ordinateur portable HP',
-      price: 1500,
-      category: 'Ordinateur Portable',
-      description: "Un PC vendu comme neuf, n'a quasiment jamais été utilisé.",
-      image: 'https://picsum.photos/250/200',
-    },
-    {
-      id: '5498454542318415',
-      name: 'MacBook Pro 17 pouces',
-      price: 2000,
-      category: 'Ordinateur MacOS',
-      description: "Un PC vendu comme neuf, n'a quasiment jamais été utilisé.",
-      image: 'https://picsum.photos/250/200',
-    },
-    {
-      id: '778742318415',
-      name: 'iPhone X Max',
-      price: 400,
-      category: 'Portable Apple',
-      description: "Un PC vendu comme neuf, n'a quasiment jamais été utilisé.",
-      image: 'https://picsum.photos/250/200',
-    },
-  ]
-  res.status(200).json(productData)
-})
+app.use('/api/products', productRoutes)
 
 module.exports = app
