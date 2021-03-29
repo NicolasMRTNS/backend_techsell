@@ -3,13 +3,13 @@ const bcrypt = require('bcrypt')
 
 exports.signup = (req, res) => {
   bcrypt
-    .hash(req.body.password, 10)
+    .hash(req.body[0].password, 10)
     .then((hash) => {
       const user = new User({
-        email: req.body.email,
+        email: req.body[0].email,
         password: hash,
       })
-      return user
+      user
         .save()
         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
         .catch((error) => res.status(400).json({ error }))
