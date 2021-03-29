@@ -34,9 +34,10 @@ app.use((req, res, next) => {
 app.use(bodyParser.json())
 
 //Post route
-app.post('/api/products', (req, res, next) => {
-  const product = new Product({ ...req.body, id: uuidv4() })
-  product
+app.post('/api/products', (req, res) => {
+  const product = new Product({ ...req.body[0] })
+  console.log(product)
+  return product
     .save()
     .then(() =>
       res.status(201).json({
@@ -47,7 +48,7 @@ app.post('/api/products', (req, res, next) => {
 })
 
 //Get route
-app.use('/api/products', (req, res, next) => {
+app.use('/api/products', (req, res) => {
   const productData = [
     {
       id: '2153248944598',
@@ -83,7 +84,6 @@ app.use('/api/products', (req, res, next) => {
     },
   ]
   res.status(200).json(productData)
-  next()
 })
 
 module.exports = app
