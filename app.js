@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 require('dotenv').config()
 const productRoutes = require('./routes/products')
+const userRoutes = require('./routes/users')
 
 const app = express()
 
@@ -33,5 +34,6 @@ app.use((req, res, next) => {
 app.use(bodyParser.json())
 
 app.use('/api/products', productRoutes)
+app.use('/api/auth', userRoutes)
 
 module.exports = app
