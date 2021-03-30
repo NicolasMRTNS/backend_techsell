@@ -2,7 +2,10 @@ const Product = require('../models/Product')
 
 //POST controller
 exports.createProduct = (req, res) => {
-  const product = new Product({ ...req.body[0] })
+  const product = new Product({
+    ...req.body[0],
+    image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+  })
   return product
     .save()
     .then(() =>

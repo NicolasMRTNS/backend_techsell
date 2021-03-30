@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 const productRoutes = require('./routes/products')
 const userRoutes = require('./routes/users')
+const path = require('path')
 
 const app = express()
 
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
 //Body parser
 app.use(bodyParser.json())
 
+app.use('/images', express.static(path.join(__dirname, 'images')))
 app.use('/api/products', productRoutes)
 app.use('/api/auth', userRoutes)
 
