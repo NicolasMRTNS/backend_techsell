@@ -3,9 +3,10 @@ const Product = require('../models/Product')
 //POST controller
 exports.createProduct = (req, res) => {
   const product = new Product({
-    ...req.body[0],
+    ...req.body,
     image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
   })
+  console.log(product)
   return product
     .save()
     .then(() =>
