@@ -1,17 +1,18 @@
-import express, { json, static } from 'express'
-import { connect } from 'mongoose'
+const express = require('express')
+const mongoose = require('mongoose')
 require('dotenv').config()
-import productRoutes from './routes/products'
-import userRoutes from './routes/users'
-import { join } from 'path'
+const productRoutes = require('./routes/products')
+const userRoutes = require('./routes/users')
+const path = require('path')
 
 const app = express()
 
 //Connection to MongoDB Atlas
-connect(process.env.MONGO_ATLAS_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose
+  .connect(process.env.MONGO_ATLAS_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'))
 
@@ -29,10 +30,10 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use(json())
+app.use(express.json())
 
-app.use('/images', static(join(__dirname, 'images')))
+app.use('/images', express.static(path.join(__dirname, 'images')))
 app.use('/api/products', productRoutes)
 app.use('/api/auth', userRoutes)
 
-export default app
+module.exports = app
