@@ -1,19 +1,17 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
+import express, { json, static } from 'express'
+import { connect } from 'mongoose'
 require('dotenv').config()
-const productRoutes = require('./routes/products')
-const userRoutes = require('./routes/users')
-const path = require('path')
+import productRoutes from './routes/products'
+import userRoutes from './routes/users'
+import { join } from 'path'
 
 const app = express()
 
 //Connection to MongoDB Atlas
-mongoose
-  .connect(process.env.MONGO_ATLAS_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+connect(process.env.MONGO_ATLAS_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'))
 
@@ -31,12 +29,10 @@ app.use((req, res, next) => {
   next()
 })
 
-//Body parser
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(json())
 
-app.use('/images', express.static(path.join(__dirname, 'images')))
+app.use('/images', static(join(__dirname, 'images')))
 app.use('/api/products', productRoutes)
 app.use('/api/auth', userRoutes)
 
-module.exports = app
+export default app

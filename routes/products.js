@@ -1,10 +1,15 @@
-const express = require('express')
-const router = express.Router()
-const multer = require('../middleware/multer-config')
-const productCtrl = require('../controllers/products')
+import { Router } from 'express'
+const router = Router()
+// const auth = require('../middleware/auth')
+import multer from '../middleware/multer-config'
+import {
+  getAllProducts,
+  createProduct,
+  deleteProduct,
+} from '../controllers/products'
 
-router.get('/', productCtrl.getAllProducts)
-router.post('/', multer, productCtrl.createProduct)
-router.delete('/:id', productCtrl.deleteProduct)
+router.get('/', getAllProducts)
+router.post('/', multer, createProduct)
+router.delete('/:id', deleteProduct)
 
-module.exports = router
+export default router

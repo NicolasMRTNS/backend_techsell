@@ -1,5 +1,5 @@
-const http = require('http')
-const app = require('./app')
+import { createServer } from 'http'
+import app, { set } from './app'
 
 // Make sure the port is valid whether it's a string or a number
 const normalizePort = (val) => {
@@ -13,7 +13,7 @@ const normalizePort = (val) => {
   return false
 }
 const port = normalizePort(process.env.PORT || '4200')
-app.set('port', port)
+set('port', port)
 
 // Handling error
 const errorHandler = (error) => {
@@ -36,7 +36,7 @@ const errorHandler = (error) => {
   }
 }
 
-const server = http.createServer(app)
+const server = createServer(app)
 
 // Event listeners, logs in the console the port the server is running on
 server.on('error', errorHandler)

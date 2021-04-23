@@ -1,10 +1,9 @@
-const User = require('../models/User')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+import User, { findOne } from '../models/User'
+import { hash as _hash, compare } from 'bcrypt'
+import { sign } from 'jsonwebtoken'
 
-exports.signup = (req, res) => {
-  bcrypt
-    .hash(req.body[0].password, 10)
+export function signup(req, res) {
+  _hash(req.body[0].password, 10)
     .then((hash) => {
       const user = new User({
         email: req.body[0].email,
@@ -18,21 +17,20 @@ exports.signup = (req, res) => {
     .catch((error) => res.status(500).json({ error }))
 }
 
-exports.login = (req, res) => {
-  User.findOne({ email: req.body[0].email })
+export function login(req, res) {
+  findOne({ email: req.body[0].email })
     .then((user) => {
       if (!user) {
         return res.status(401).json({ error: 'Utilisateur non trouvé.' })
       }
-      bcrypt
-        .compare(req.body[0].password, user.password)
+      compare(req.body[0].password, user.password)
         .then((valid) => {
           if (!valid) {
             return res.status(401).json({ error: 'Mot de passe incorrect.' })
           }
           res.status(200).json({
             userId: user._id,
-            token: jwt.sign({ userId: user._id }, 'RANDOM_SECRET_KEY', {
+            token: sign({ userId: user._id }, 'RANDOM_SECRET_KEY', {
               expiresIn: '24h',
             }),
           })
