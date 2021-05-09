@@ -1,4 +1,5 @@
 const Product = require('../models/Product')
+const fs = require('fs')
 
 //POST controller
 exports.createProduct = (req, res) => {
@@ -25,9 +26,17 @@ exports.getAllProducts = (req, res) => {
 
 //Delete controller
 exports.deleteProduct = (req, res) => {
-  Product.deleteOne({ _id: req.params.id })
-    .then(() => {
-      res.status(200).json({ message: 'Deleted!' })
+  Product.findOne({ _id: req.params.id })
+    .then((product) => {
+      const filename = product.image.split('/images/')[1]
+      console.log(filename)
+      fs.unlink(`images/${filename}`, () => {
+        Product.deleteOne({ _id: req.params.id })
+          .then(() => {
+            res.status(200).json({ message: 'Objet supprimé!' })
+          })
+          .catch((error) => res.status(400).json({ error }))
+      })
     })
-    .catch((error) => res.status(400).json({ error }))
+    .catch((error) => res.status(500).json({ error }))
 }
